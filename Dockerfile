@@ -1,18 +1,13 @@
-replicaCount: 2
+FROM python:3.11-slim
 
-image:
-  repository: lab-app
-  tag: "0.1.0"
-  pullPolicy: IfNotPresent
+WORKDIR /app
 
-service:
-  type: ClusterIP
-  port: 80
+COPY requirements.txt .
 
-resources:
-  requests:
-    cpu: 50m
-    memory: 64Mi
-  limits:
-    cpu: 200m
-    memory: 128Mi
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+EXPOSE 8080
+
+CMD ["python", "app.py"]
